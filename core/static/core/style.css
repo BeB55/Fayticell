@@ -1,0 +1,22 @@
+:root {
+    --fayticell-green: #75c21b /* verde claro */
+}
+
+body {
+    background-color: #ffffff; /* fondo blanco */
+    color: #333333; /* texto gris oscuro */
+}
+
+.navbar, footer {
+    background-color: var(--fayticell-green) !important;
+}
+
+.btn-primary {
+    background-color: var(--fayticell-green);
+    border-color: var(--fayticell-green);
+}
+
+.btn-primary:hover {
+    background-color: #7CB342; /* un verde un poco más oscuro para hover */
+    border-color: #7CB342;
+}
