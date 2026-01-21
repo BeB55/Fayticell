@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from core.models import Producto
+from tienda.models import Producto   
 
 def home(request):
-    productos = Producto.objects.filter(destacado=True)[:6]  # o todos si querés
+    # Trae los productos destacados (máximo 6)
+    productos = Producto.objects.filter(destacado=True)[:6]
     return render(request, 'core/home.html', {'productos': productos})
 
 def garantias(request):
@@ -16,5 +17,3 @@ def contacto(request):
 
 def nosotros(request):
     return render(request, 'core/nosotros.html')
-
-

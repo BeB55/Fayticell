@@ -1,8 +1,9 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
-<!-- Banner Carrusel full-width con altura fija -->
+<!-- Banner Carrusel -->
 <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
@@ -27,51 +28,46 @@
   </button>
 </div>
 
-<!-- Sección de productos con sidebar -->
-<div class="container my-5">
-  <div class="row">
-    <!-- Sidebar -->
-<aside class="col-md-3 mb-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-      Categorías
+<!-- Sección de productos -->
+<div class="container my-4">
+  <!-- Encabezado -->
+  <div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-primary me-3"></div>
+      <h2 class="text-primary me-3 mb-0">Productos destacados</h2>
+      <div class="flex-grow-1 border-top border-primary ms-3"></div>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><a href="#">Celulares</a></li>
-      <li class="list-group-item"><a href="#">Accesorios</a></li>
-      <li class="list-group-item"><a href="#">Repuestos</a></li>
-      <li class="list-group-item"><a href="#">Servicios</a></li>
-    </ul>
   </div>
-</aside>
 
-
-    <!-- Productos -->
-    <div class="col-md-9">
-      <h2 class="text-center mb-4 text-primary">Productos destacados</h2>
-      <div class="row">
-        {% for producto in productos %}
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 shadow-sm border-0">
-            <div class="position-relative">
-              <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
-              {% if producto.destacado %}
-              <span class="badge bg-success position-absolute top-0 start-0 m-2">Destacado</span>
-              {% endif %}
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ producto.nombre }}</h5>
-              <p class="card-text text-muted">{{ producto.descripcion|truncatewords:20 }}</p>
-              <p class="fw-bold">Precio: ${{ producto.precio }}</p>
-              <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">Ver más</a>
-            </div>
-          </div>
+  <!-- Productos destacados ocupando todo el ancho -->
+  <div class="row">
+    {% for producto in productos %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm {% if producto.destacado %}destacado{% endif %}">
+        <div class="position-relative">
+          <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+          {% if producto.destacado %}
+          <span class="badge bg-success position-absolute top-0 start-0 m-2">Destacado</span>
+          {% endif %}
         </div>
-        {% empty %}
-        <p class="text-center text-muted">Todavía no hay productos destacados.</p>
-        {% endfor %}
+        <div class="card-body">
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text text-muted">{{ producto.descripcion|truncatewords:20 }}</p>
+          <p class="fw-bold">Precio: ${{ producto.precio|floatformat:0|intcomma }}</p>
+          <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">Ver más</a>
+        </div>
       </div>
     </div>
+    {% empty %}
+    <p class="text-center text-muted">Todavía no hay productos destacados.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Botón de todos los productos -->
+  <div class="text-center mt-4">
+    <a href="{% url 'todos_productos' %}" class="btn btn-lg btn-success">
+      Ver todos los productos
+    </a>
   </div>
 </div>
 {% endblock %}

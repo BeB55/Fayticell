@@ -1,5 +1,5 @@
 :root {
-    --fayticell-green: #75c21b /* verde claro */
+    --fayticell-green: #75c21b; /* verde claro */
 }
 
 body {
@@ -8,7 +8,7 @@ body {
 }
 
 .navbar, footer {
-    background-color: var(--fayticell-green) !important;
+    background-color: var(--fayticell-green);
 }
 
 .btn-primary {
@@ -19,4 +19,55 @@ body {
 .btn-primary:hover {
     background-color: #7CB342; /* un verde un poco más oscuro para hover */
     border-color: #7CB342;
+}
+
+.card {
+  border: none !important; /* elimina otros bordes */
+  border-bottom: 4px solid var(--fayticell-green) !important; /* fuerza borde inferior */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.destacado {
+  border-bottom: 4px solid #28a745 !important; /* verde éxito */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* se levanta un poquito */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25) !important; /* sombra más marcada */
+}
+
+/* Efecto hover en el botón "Ver todos los productos" */
+.btn-success {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-success:hover {
+  background-color: #256d36; /* verde más oscuro */
+  transform: scale(1.05); /* se agranda un poquito */
+}
+
+/* --- NUEVO: mantener botones alineados --- */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-body {
+  flex: 1; /* ocupa espacio restante */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body .btn {
+  margin-top: auto; /* empuja el botón al fondo */
+}
+
+/* Navbar principal (oscura) en verde */
+.navbar-dark {
+  background-color: var(--fayticell-green) !important;
+}
+
+.navbar-light {
+  background-color: #6ab019 !important;
 }
