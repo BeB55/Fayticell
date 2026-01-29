@@ -1,5 +1,8 @@
-from django.shortcuts import render
-from tienda.models import Producto   
+from django.shortcuts import render, redirect
+from tienda.models import Producto
+from django.contrib.auth.decorators import login_required
+from .forms import EditProfileForm, UserForm
+from .models import Profile
 
 def home(request):
     # Trae los productos destacados (máximo 6)
@@ -30,3 +33,33 @@ def test_email(request):
         fail_silently=False,
     )
     return HttpResponse("✅ Correo de prueba enviado.")
+
+def como_comprar(request):
+    return render(request, "como_comprar.html")
+
+@login_required
+def mi_cuenta(request):
+    return render(request, "account/mi_cuenta.html")
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = EditProfileForm(request.POST, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect("mi_cuenta")
+    else:
+        user_form = UserForm(instance=user)
+        profile_form = EditProfileForm(instance=profile)
+
+    return render(request, "account/edit_profile.html", {
+        "user_form": user_form,
+        "profile_form": profile_form,
+    })
+

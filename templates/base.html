@@ -6,6 +6,8 @@
     <title>Fayticell</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'core/style.css' %}?v=2">
 </head>
 <body>
@@ -34,7 +36,12 @@
                             Iniciar Sesión
                         </a>
                     {% endif %}
-                    <a class="btn btn-outline-primary" href="/carrito/">Carrito</a>
+
+                    <!-- ✅ Botón Carrito con icono -->
+                    <a class="btn btn-outline-primary" href="/carrito/" title="Carrito">
+                        <i class="bi bi-cart"></i>
+                        <span class="d-none d-md-inline"></span>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -43,43 +50,53 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-top shadow-sm">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSecundaria">
-                    <ul class="navbar-nav mx-auto">
-                        <!-- Botón Garantías -->
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'garantias' %}">Garantías</a>
-                        </li>
-                        <!-- Botón Servicios -->
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'servicios' %}">Servicios</a>
-                        </li>
-                        <!-- Botón Contacto -->
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'contacto' %}">Contacto</a>
-                        </li>
-                        <!-- Botón Nosotros -->
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'nosotros' %}">Nosotros</a>
-                        </li>
+                    
+                    <!-- Bloque de navegación centrado -->
+                    <div class="d-flex justify-content-center flex-grow-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'garantias' %}">Garantías</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'servicios' %}">Servicios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'contacto' %}">Contacto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'nosotros' %}">Nosotros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'como_comprar' %}">Cómo Comprar</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle btn btn-outline-success mx-2" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Productos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+                                    <li><a class="dropdown-item" href="#">Celulares</a></li>
+                                    <li><a class="dropdown-item" href="#">Accesorios</a></li>
+                                    <li><a class="dropdown-item" href="#">Repuestos</a></li>
+                                    <li><a class="dropdown-item" href="#">Servicios</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <!-- ✅ Dropdown Productos -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle btn btn-outline-success mx-2" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Productos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-                                <li><a class="dropdown-item" href="#">Celulares</a></li>
-                                <li><a class="dropdown-item" href="#">Accesorios</a></li>
-                                <li><a class="dropdown-item" href="#">Repuestos</a></li>
-                                <li><a class="dropdown-item" href="#">Servicios</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <!-- Bloque de perfil a la derecha -->
+                    {% if user.is_authenticated %}
+                    <div class="d-flex ms-auto">
+                        <a class="btn btn-outline-primary" href="{% url 'mi_cuenta' %}" title="Mi cuenta">
+                            <i class="bi bi-person-circle"></i> <span class="d-none d-md-inline">Perfil</span>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- ✅ Bloque de mensajes -->
+    <!-- Bloque de mensajes -->
     <div class="container mt-3">
         {% if messages %}
             {% for message in messages %}
