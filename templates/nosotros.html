@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5 text-center">
+  <!-- Encabezado -->
+  <div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-primary me-3"></div>
+      <h2 class="text-primary me-3 mb-0">Nosotros</h2>
+      <div class="flex-grow-1 border-top border-primary ms-3"></div>
+    </div>
+  </div>
+
+  <!-- Introducción -->
+  <p class="lead mb-5">
+    En <strong>Fayticell</strong> somos un equipo apasionado por la tecnología, 
+    comprometidos en brindar soluciones confiables y atención personalizada 
+    a cada cliente. Nuestro objetivo es que tu experiencia sea segura, rápida y cercana.
+  </p>
+
+  <!-- Sección historia / misión / valores -->
+  <div class="row justify-content-center">
+    <!-- Historia -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-book text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Nuestra historia</h5>
+          <p class="card-text">
+            Nacimos como un pequeño local en Gregorio de Laferrere, 
+            creciendo gracias a la confianza de nuestros clientes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misión -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-bullseye text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Nuestra misión</h5>
+          <p class="card-text">
+            Brindar productos y servicios de calidad, 
+            con precios justos y atención cercana.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Valores -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-heart text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Nuestros valores</h5>
+          <p class="card-text">
+            Honestidad, compromiso y pasión por la tecnología, 
+            siempre pensando en el bienestar del cliente.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="mt-5">
+    <a href="{% url 'contacto' %}" class="btn btn-primary btn-lg">
+      Conocé más sobre nosotros
+    </a>
+  </div>
+</div>
+{% endblock %}

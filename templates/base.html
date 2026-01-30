@@ -19,8 +19,8 @@
                 <a class="navbar-brand" href="/">Fayticell</a>
 
                 <!-- Barra de búsqueda -->
-                <form class="d-flex mx-auto" style="width: 50%;">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Buscar">
+                <form class="d-flex mx-auto" style="width: 50%;" method="get" action="{% url 'productos' %}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." aria-label="Buscar">
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
 
@@ -74,10 +74,10 @@
                                     Productos
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-                                    <li><a class="dropdown-item" href="#">Celulares</a></li>
-                                    <li><a class="dropdown-item" href="#">Accesorios</a></li>
-                                    <li><a class="dropdown-item" href="#">Repuestos</a></li>
-                                    <li><a class="dropdown-item" href="#">Servicios</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=celulares">Celulares</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=accesorios">Accesorios</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=repuestos">Repuestos</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=servicios">Servicios</a></li>
                                 </ul>
                             </li>
                         </ul>

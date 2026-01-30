@@ -154,10 +154,11 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Requerir confirmación de email
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"   # opciones: "none", "optional", "mandatory"
-ACCOUNT_EMAIL_REQUIRED = True              # obliga a pedir email en el signup
-ACCOUNT_AUTHENTICATION_METHOD = "email"    # login con email en vez de username
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" 
+ACCOUNT_LOGIN_METHODS = {"email"}  
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp-relay.brevo.com"

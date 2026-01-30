@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from tienda.models import Producto
+from core.models import Producto
 from django.contrib.auth.decorators import login_required
 from .forms import EditProfileForm, UserForm
 from .models import Profile
+from django.db import models
 
 def home(request):
     # Trae los productos destacados (máximo 6)
@@ -20,6 +21,19 @@ def contacto(request):
 
 def nosotros(request):
     return render(request, 'nosotros.html')
+
+def productos(request):
+    productos = Producto.objects.all()
+    categoria = request.GET.get('categoria')
+
+    if categoria:
+        productos = productos.filter(categoria__iexact=categoria)
+
+    query = request.GET.get('q')
+    if query:
+        productos = productos.filter (nombre__icontains=query)
+
+    return render(request, 'productos.html', {'productos': productos})
 
 from django.core.mail import send_mail
 from django.http import HttpResponse
