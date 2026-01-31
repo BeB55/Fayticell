@@ -25,7 +25,8 @@
 
       <!-- Botón de acción -->
       <div class="mt-4">
-        <a href="#" class="btn btn-outline-success btn-lg">Agregar al carrito</a>
+        <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success btn-lg">
+          <i class="bi bi-cart-plus"></i> Agregar al carrito</a>
       </div>
     </div>
   </div>

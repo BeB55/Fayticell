@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Producto
 from django.contrib.auth.decorators import login_required
 from .forms import EditProfileForm, UserForm
@@ -77,3 +77,54 @@ def edit_profile(request):
         "profile_form": profile_form,
     })
 
+
+def ver_carrito(request):
+    carrito = request.session.get('carrito', {})
+    total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
+    return render(request, 'carrito.html', {'carrito': carrito, 'total': total})
+
+def agregar_al_carrito(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    producto = get_object_or_404(Producto, id=producto_id)
+
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)]['cantidad'] += 1
+    else:
+        carrito[str(producto_id)] = {
+            'nombre': producto.nombre,
+            'precio': float(producto.precio),
+            'cantidad': 1,
+            'imagen': producto.imagen.url if producto.imagen else None,
+        }
+
+    request.session['carrito'] = carrito
+
+    # 👇 vuelve a la página anterior en lugar de ir al carrito
+    return redirect(request.META.get('HTTP_REFERER', 'productos'))
+
+
+def eliminar_del_carrito(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    if str(producto_id) in carrito:
+        del carrito[str(producto_id)]
+        request.session['carrito'] = carrito
+    return redirect('carrito')
+
+
+def incrementar_cantidad(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)]['cantidad'] += 1
+        request.session['carrito'] = carrito
+    return redirect(request.META.get('HTTP_REFERER', 'carrito'))
+
+def disminuir_cantidad(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    if str(producto_id) in carrito:
+        if carrito[str(producto_id)]['cantidad'] > 1:
+            carrito[str(producto_id)]['cantidad'] -= 1
+        else:
+            # si llega a 0, lo eliminamos
+            carrito.pop(str(producto_id))
+        request.session['carrito'] = carrito
+    return redirect(request.META.get('HTTP_REFERER', 'carrito'))
