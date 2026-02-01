@@ -86,6 +86,7 @@ DATABASES = {
 
 
 
+
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
