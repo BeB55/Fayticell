@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load humanize %}   {# ✅ cargamos humanize para usar intcomma #}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <!-- Imagen del producto -->
+    <div class="col-md-6">
+      <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow" alt="{{ producto.nombre }}">
+    </div>
+
+    <!-- Información del producto -->
+    <div class="col-md-6">
+      <h2 class="mb-3">{{ producto.nombre }}</h2>
+      <p class="text-muted">{{ producto.descripcion }}</p>
+
+      <!-- Precio formateado -->
+      <p class="fw-bold fs-4 text-primary">
+        Precio: ${{ producto.precio|floatformat:0|intcomma }}
+      </p>
+
+      {% if producto.destacado %}
+      <span class="badge bg-success">Destacado</span>
+      {% endif %}
+
+      <!-- Botón de acción -->
+      <div class="mt-4">
+        <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success btn-lg">
+          <i class="bi bi-cart-plus"></i> Agregar al carrito</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

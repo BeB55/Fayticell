@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5 text-center">
+  <!-- Encabezado -->
+  <div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-primary me-3"></div>
+      <h2 class="text-primary me-3 mb-0">Contacto</h2>
+      <div class="flex-grow-1 border-top border-primary ms-3"></div>
+    </div>
+  </div>
+
+  <!-- Información del local centrada -->
+  <h5 class="text-primary mb-4"><i class="bi bi-shop"></i> Nuestro local</h5>
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-3 mb-2">
+      <i class="bi bi-telephone text-primary"></i>
+      <span class="fw-bold">Teléfono:</span> +54 11 1234-5678
+    </div>
+    <div class="col-md-3 mb-2">
+      <i class="bi bi-envelope text-primary"></i>
+      <span class="fw-bold">Email:</span> contacto@fayticell.com
+    </div>
+    <div class="col-md-4 mb-2">
+      <i class="bi bi-geo-alt text-primary"></i>
+      <span class="fw-bold">Ubicación:</span> Celulares Fayti, Gregorio de Laferrere
+    </div>
+  </div>
+
+  <!-- Mapa de Google Maps -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3279.643581789418!2d-58.59978798953806!3d-34.71416866322525!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc67e800f9ecf%3A0x52dab06d7a2487e0!2sCelulares%20Fayti!5e0!3m2!1ses!2sar!4v1769715695522!5m2!1ses!2sar" 
+        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <!-- Formulario de contacto -->
+  <form method="post" novalidate class="mx-auto" style="max-width: 600px;">
+    {% csrf_token %}
+
+    <div class="mb-3 text-start">
+      {{ form.nombre.label_tag }}
+      {{ form.nombre }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.mensaje.label_tag }}
+      {{ form.mensaje }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

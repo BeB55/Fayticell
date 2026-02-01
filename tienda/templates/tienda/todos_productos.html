@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-primary mb-4">Todos los productos</h2>
+  <div class="row">
+    {% for producto in productos %}
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm border-0 {% if producto.destacado %}destacado{% endif %}">
+        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text text-muted">{{ producto.descripcion|truncatewords:20 }}</p>
+          <p class="fw-bold">Precio: ${{ producto.precio|floatformat:0|intcomma }}</p>
+        </div>
+        <div class="card-footer bg-transparent border-0 d-flex gap-2">
+          <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary flex-fill">
+            Ver más
+          </a>
+          <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-success flex-fill">
+            <i class="bi bi-cart-plus"></i> Agregar
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-muted">Todavía no hay productos cargados.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

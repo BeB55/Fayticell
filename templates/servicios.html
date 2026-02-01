@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5 text-center">
+  <!-- Encabezado -->
+  <div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-primary me-3"></div>
+      <h2 class="text-primary me-3 mb-0">Servicios</h2>
+      <div class="flex-grow-1 border-top border-primary ms-3"></div>
+    </div>
+  </div>
+
+  <!-- Introducción -->
+  <p class="lead mb-5">
+    En <strong>Fayticell</strong> ofrecemos soluciones completas para tu celular y tecnología, 
+    con atención personalizada y confianza garantizada.
+
+    Sabemos que hoy en dia los celulares no son solo para comunicarse: Los usamos para trabajar, estudiar,
+    entretenernos y estar conectados con el mundo. Por eso, nuestros servicios están diseñados paar darte la seguridad
+    de que tu dispositivo siempre esté en las mejores condiciones.
+  </p>
+  
+  <p><strong>Cada fallo tiene su tiempo de reparación y costo de tarifa, contactame para darte mejor informacion del problema o acercate al local.</strong></p>
+  
+  <!-- Sección de servicios -->
+  <div class="row justify-content-center">
+    <!-- Servicio 1 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-tools text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Reparación</h5>
+          <p class="card-text">Arreglamos pantallas, baterías y componentes con repuestos originales y garantía.</p>
+            <p>Reparación de Teléfonos Celulares LG</p>
+            <p>Reparación de Teléfonos Celulares Nokia</p>
+            <p>Reparación de Teléfonos Celulares Motorola</p>
+            <p>Reparación de Teléfonos Celulares Samsung</p>
+            <p>Reparación de Teléfonos Celulares Xiaomi</p>
+            <p>Reparación de Tablets</p>
+
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 2 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-phone text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Accesorios</h5>
+          <p class="card-text">Fundas, cargadores, auriculares y más, con variedad y precios accesibles.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 3 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">Protección y seguridad</h5>
+          <p class="card-text">Colocación de vidrios templados y asesoramiento en apps de seguridad.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="mt-5">
+    <a href="{% url 'contacto' %}" class="btn btn-primary btn-lg">
+      Consultanos por tu servicio
+    </a>
+  </div>
+</div>
+{% endblock %}

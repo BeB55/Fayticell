@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Fayticell</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'core/style.css' %}?v=2">
+</head>
+<body>
+    <header>
+        <!-- Navbar principal -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm border-bottom border-secondary">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand" href="/">Fayticell</a>
+
+                <!-- Barra de búsqueda -->
+                <form class="d-flex mx-auto" style="width: 50%;" method="get" action="{% url 'productos' %}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." aria-label="Buscar">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+
+                <!-- Botones a la derecha -->
+                <div class="d-flex">
+                    {% if user.is_authenticated %}
+                        <span class="text-white me-2">Hola, {{ user.username }}</span>
+                        <a class="btn btn-outline-danger me-2" href="{% url 'account_logout' %}">
+                            Cerrar Sesión
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-success me-2" href="{% url 'account_login' %}">
+                            Iniciar Sesión
+                        </a>
+                    {% endif %}
+
+                    <!-- ✅ Botón Carrito con icono y contador -->
+                    <a class="btn btn-outline-primary position-relative" href="{% url 'carrito' %}" title="Carrito">
+                        <i class="bi bi-cart"></i>
+                        <span class="d-none d-md-inline"></span>
+
+                        {% if carrito_count > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                            {{ carrito_count }}
+                        </span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Navbar secundaria con botones -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-top shadow-sm">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSecundaria">
+                    
+                    <!-- Bloque de navegación centrado -->
+                    <div class="d-flex justify-content-center flex-grow-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'garantias' %}">Garantías</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'servicios' %}">Servicios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'contacto' %}">Contacto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'nosotros' %}">Nosotros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary mx-2" href="{% url 'como_comprar' %}">Cómo Comprar</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle btn btn-outline-success mx-2" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Productos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=celulares">Celulares</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=accesorios">Accesorios</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'productos' %}?categoria=repuestos">Repuestos</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Bloque de perfil a la derecha -->
+                    {% if user.is_authenticated %}
+                    <div class="d-flex ms-auto">
+                        <a class="btn btn-outline-primary" href="{% url 'mi_cuenta' %}" title="Mi cuenta">
+                            <i class="bi bi-person-circle"></i> <span class="d-none d-md-inline">Perfil</span>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Bloque de mensajes -->
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Aquí empieza el contenido de cada página -->
+    <main class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-dark text-light mt-5">
+  <div class="container py-4">
+    <div class="row">
+      <!-- Columna 1: Logo / Nombre + Acerca de -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">Fayticell</h5>
+        <p class="small text-muted mb-2">
+          Tu tienda de confianza en tecnología y accesorios.
+        </p>
+        <!-- Texto institucional debajo del nombre -->
+        <p class="small">
+          En <strong>Fayticell</strong> trabajamos cada día para acercar la mejor
+          tecnología a nuestros clientes, con atención personalizada y confianza
+          en cada compra. Nuestro objetivo es reflejar la identidad de nuestro
+          local físico en el mundo digital.
+        </p>
+      </div>
+
+      <!-- Columna 2: Enlaces rápidos -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-bold">Enlaces rápidos</h6>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'productos' %}" class="text-light text-decoration-none">Productos</a></li>
+          <li><a href="{% url 'carrito' %}" class="text-light text-decoration-none">Carrito</a></li>
+          <li><a href="{% url 'contacto' %}" class="text-light text-decoration-none">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Contacto -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-bold">Contacto</h6>
+        <p class="small mb-1"><i class="bi bi-geo-alt"></i> Av. Siempre Viva 123, Buenos Aires</p>
+        <p class="small mb-1"><i class="bi bi-telephone"></i> +54 11 5555-5555</p>
+        <p class="small"><i class="bi bi-envelope"></i> info@fayticell.com</p>
+      </div>
+    </div>
+
+    <!-- Línea inferior -->
+    <div class="text-center border-top pt-3">
+      <p class="small mb-0">&copy; {{ year }} Fayticell - Todos los derechos reservados</p>
+    </div>
+  </div>
+</footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
