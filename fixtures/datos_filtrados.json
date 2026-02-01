@@ -1,124 +1,88 @@
 [
-
-{
-  "model": "core.producto",
-  "pk": 1,
-  "fields": {
-    "nombre": "Celular Samsung A14",
-    "descripcion": "Smartphone con pantalla de 6.6\" y bater�a de 5000 mAh.",
-    "precio": "150000.00",
-    "imagen": "productos/A14.jpg",
-    "destacado": true,
-    "categoria": "celulares"
+  {
+    "model": "core.producto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Celular Samsung A14",
+      "descripcion": "Smartphone con pantalla de 6.6\" y batería de 5000 mAh.",
+      "precio": "150000.00",
+      "imagen": "productos/A14.jpg",
+      "destacado": true,
+      "categoria": "celulares"
+    }
+  },
+  {
+    "model": "core.producto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Cargador rápido 25W",
+      "descripcion": "Compatible con la mayoría de celulares Samsung y Android.",
+      "precio": "8000.00",
+      "imagen": "productos/Cargador.jpg",
+      "destacado": true,
+      "categoria": "accesorios"
+    }
+  },
+  {
+    "model": "core.producto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Xiaomi 14T",
+      "descripcion": "Diseñado en colaboración con Leica, con Xiaomi 14T con triple lente Leica Summilux y matriz Sony IMX906 descubrí un nuevo mundo de fotografía móvil y libera tu creatividad en cualquier momento y lugar.\r\n\r\nLa pantalla AMOLED de 144 Hz, el procesador MediaTek Dimensity 8300-Ultra y el HyperCharge garantizan un funcionamiento fluido y una carga rápida, mientras que la batería de 5000 mAh garantiza un funcionamiento prolongado.",
+      "precio": "1299000.00",
+      "imagen": "productos/Xiamo.jpg",
+      "destacado": true,
+      "categoria": "celulares"
+    }
+  },
+  {
+    "model": "core.producto",
+    "pk": 4,
+    "fields": {
+      "nombre": "Samsung a22 4G",
+      "descripcion": "Amplía tu perspectiva hasta 6,4” con la pantalla Infinity-U de Galaxy A22 para que no se te escape ni un detalle. Gracias a su tecnología HD+ Super AMOLED y a 600 nits de claridad1, descubrirás una la mejor forma de disfrutar cada día de tu contenido: nítido, claro e impresionante. Además, su Real Smooth mantiene una vista sin interrupciones mientras juegas o haces scroll.",
+      "precio": "250000.00",
+      "imagen": "productos/a22.jpg",
+      "destacado": false,
+      "categoria": "celulares"
+    }
+  },
+  {
+    "model": "core.producto",
+    "pk": 5,
+    "fields": {
+      "nombre": "Samsung s25 5g",
+      "descripcion": "Celular, Smartphone 256GB, Android Desbloqueado, Camara AI Modo Nocturno, Procesador Snapdragon 8 Elite Rapido, Pantalla ProScaler, Bateria 4900mAh, 2025, Garantia de EE. UU. de 1",
+      "precio": "2650000.00",
+      "imagen": "productos/sa.jpg",
+      "destacado": true,
+      "categoria": "celulares"
+    }
+  },
+  {
+    "model": "auth.user",
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$ViNg52aX0Dy2lgOvYKDKnd$GLFokeYtlL9e+p/qXT4WJTE4/CsnrOxXHpp2isA9KDA=",
+      "last_login": "2026-01-27T21:03:24.360Z",
+      "is_superuser": true,
+      "username": "Brian",
+      "first_name": "",
+      "last_name": "",
+      "email": "Brian@brian.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-27T21:02:26.862Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "core.profile",
+    "pk": 1,
+    "fields": {
+      "user": ["Brian"],
+      "telefono": null,
+      "direccion": null
+    }
   }
-},
-{
-  "model": "core.producto",
-  "pk": 2,
-  "fields": {
-    "nombre": "Cargador r�pido 25W",
-    "descripcion": "Compatible con la mayor�a de celulares Samsung y Android.",
-    "precio": "8000.00",
-    "imagen": "productos/Cargador.jpg",
-    "destacado": true,
-    "categoria": "accesorios"
-  }
-},
-{
-  "model": "core.producto",
-  "pk": 3,
-  "fields": {
-    "nombre": "Xiaomi 14T",
-    "descripcion": "Dise�ado en colaboraci�n con Leica, con Xiaomi 14T con triple lente Leica Summilux y matriz Sony IMX906 descubr� un nuevo mundo de fotograf�a m�vil y libera tu creatividad en cualquier momento y lugar.\r\n\r\nLa pantalla AMOLED de 144 Hz, el procesador MediaTek Dimensity 8300-Ultra y el HyperCharge garantizan un funcionamiento fluido y una carga r�pida, mientras que la bater�a de 5000 mAh garantiza un funcionamiento prolongado.",
-    "precio": "1299000.00",
-    "imagen": "productos/Xiamo.jpg",
-    "destacado": true,
-    "categoria": "celulares"
-  }
-},
-{
-  "model": "core.producto",
-  "pk": 4,
-  "fields": {
-    "nombre": "Samsung a22 4G",
-    "descripcion": "Ampl�a tu perspectiva hasta 6,4� con la pantalla Infinity-U de Galaxy A22 para que no se te escape ni un detalle. Gracias a su tecnolog�a HD+ Super AMOLED y a 600 nits de claridad1, descubrir�s una la mejor forma de disfrutar cada d�a de tu contenido: n�tido, claro e impresionante. Adem�s, su Real Smooth mantiene una vista sin interrupciones mientras juegas o haces scroll.",
-    "precio": "250000.00",
-    "imagen": "productos/a22.jpg",
-    "destacado": false,
-    "categoria": "celulares"
-  }
-},
-{
-  "model": "core.producto",
-  "pk": 5,
-  "fields": {
-    "nombre": "Samsung s25 5g",
-    "descripcion": "Celular, Smartphone 256GB, Android Desbloqueado, Camara AI Modo Nocturno, Procesador Snapdragon 8 Elite Rapido, Pantalla ProScaler, Bateria 4900mAh, 2025, Garantia de EE. UU. de 1",
-    "precio": "2650000.00",
-    "imagen": "productos/sa.jpg",
-    "destacado": true,
-    "categoria": "celulares"
-  }
-},
-
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$1000000$ViNg52aX0Dy2lgOvYKDKnd$GLFokeYtlL9e+p/qXT4WJTE4/CsnrOxXHpp2isA9KDA=",
-    "last_login": "2026-01-27T21:03:24.360Z",
-    "is_superuser": true,
-    "username": "Brian",
-    "first_name": "",
-    "last_name": "",
-    "email": "Brian@brian.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-01-27T21:02:26.862Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "!aQu9G1Bwb4lyuKWVkS1YHezfiQ63hFrQEdSYls6T",
-    "last_login": "2026-01-27T21:02:42.338Z",
-    "is_superuser": false,
-    "username": "brian4",
-    "first_name": "Brian",
-    "last_name": "Baptista",
-    "email": "brianebaptista@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-01-27T21:02:42.278Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "account.emailaddress",
-  "pk": 3,
-  "fields": {
-    "user": [
-      "brian4"
-    ],
-    "email": "brianebaptista@gmail.com",
-    "verified": true,
-    "primary": true
-  }
-},
-
-{
-  "model": "core.profile",
-  "pk": 1,
-  "fields": {
-    "user": [
-      "Brian"
-    ],
-    "telefono": null,
-    "direccion": null
-  }
-}
-
 ]
-
