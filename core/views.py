@@ -3,10 +3,14 @@ from core.models import Producto
 from django.contrib.auth.decorators import login_required
 from .forms import EditProfileForm, UserForm
 from .models import Profile
-from django.db import models
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from django.core.mail import EmailMessage
+from io import BytesIO
+import datetime
 
 def home(request):
-    # Trae los productos destacados (máximo 6)
     productos = Producto.objects.filter(destacado=True)[:6]
     return render(request, 'home.html', {'productos': productos})
 
@@ -31,30 +35,13 @@ def productos(request):
 
     query = request.GET.get('q')
     if query:
-        productos = productos.filter (nombre__icontains=query)
+        productos = productos.filter(nombre__icontains=query)
 
     return render(request, 'productos.html', {'productos': productos})
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-def test_email(request):
-    send_mail(
-        subject="Prueba de correo desde Fayticell",
-        message="Hola Brian, este es un correo de prueba enviado con Brevo SMTP.",
-        from_email="Fayticell <brianebaptista@gmail.com>",  # remitente verificado en Brevo
-        recipient_list=["brianebaptista@gmail.com"],         # destinatario de prueba
-        fail_silently=False,
-    )
-    return HttpResponse("✅ Correo de prueba enviado.")
-
-def como_comprar(request):
-    return render(request, "como_comprar.html")
 
 @login_required
 def mi_cuenta(request):
     return render(request, "account/mi_cuenta.html")
-
 
 @login_required
 def edit_profile(request):
@@ -77,7 +64,6 @@ def edit_profile(request):
         "profile_form": profile_form,
     })
 
-
 def ver_carrito(request):
     carrito = request.session.get('carrito', {})
     total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
@@ -98,10 +84,7 @@ def agregar_al_carrito(request, producto_id):
         }
 
     request.session['carrito'] = carrito
-
-    # 👇 vuelve a la página anterior en lugar de ir al carrito
     return redirect(request.META.get('HTTP_REFERER', 'productos'))
-
 
 def eliminar_del_carrito(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -109,7 +92,6 @@ def eliminar_del_carrito(request, producto_id):
         del carrito[str(producto_id)]
         request.session['carrito'] = carrito
     return redirect('carrito')
-
 
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -124,17 +106,47 @@ def disminuir_cantidad(request, producto_id):
         if carrito[str(producto_id)]['cantidad'] > 1:
             carrito[str(producto_id)]['cantidad'] -= 1
         else:
-            # si llega a 0, lo eliminamos
             carrito.pop(str(producto_id))
         request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
+# ✅ Checkout corregido con PDF + envío por email
 def checkout(request):
     if request.method == "POST":
         metodo = request.POST.get("metodo_pago")
         envio = request.POST.get("envio_domicilio")
+        carrito = request.session.get('carrito', {})
+        total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
+
+        # Generar PDF en memoria
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer, pagesize=A4)
+        p.setFont("Helvetica", 12)
+        p.drawString(100, 800, "Fayticell - Comprobante de compra")
+        p.drawString(100, 780, f"Fecha: {datetime.date.today()}")
+        p.drawString(100, 750, f"Método de pago: {metodo}")
+        p.drawString(100, 730, f"Envío a domicilio: {'Sí' if envio else 'No'}")
+        p.drawString(100, 710, f"Total: ${total}")
+        p.showPage()
+        p.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+
+        # Enviar email si el usuario está logueado
+        if request.user.is_authenticated:
+            email = EmailMessage(
+                "Tu comprobante de compra - Fayticell",
+                "Gracias por tu compra. Adjuntamos tu comprobante en PDF.",
+                None,  # usa DEFAULT_FROM_EMAIL de settings.py
+                [request.user.email],
+            )
+            email.attach("comprobante.pdf", pdf, "application/pdf")
+            email.send()
+
         return render(request, "checkout_success.html", {
             "metodo": metodo,
             "envio": envio,
+            "total": total,
         })
+
     return render(request, "checkout.html")
