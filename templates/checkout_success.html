@@ -13,5 +13,5 @@
 <p>Método de pago: {{ metodo }}</p>
 <p>Envío a domicilio: {% if envio %}Sí{% else %}No{% endif %}</p>
 
-<a href="{% url 'tienda:productos' %}" class="btn btn-primary mt-3">Volver a la tienda</a>
+<a href="{% url 'carrito' %}" class="btn btn-primary mt-3">Volver al carrito</a>
 {% endblock %}
