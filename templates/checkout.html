@@ -1,23 +1,35 @@
-<h2>Finalizar compra</h2>
-<p>Selecciona tu método de pago:</p>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-primary me-3"></div>
+      <h2 class="text-primary me-3 mb-0">Finalizar compra</h2>
+      <div class="flex-grow-1 border-top border-primary ms-3"></div>
+    </div>
+</div>
 
 <form method="post">
   {% csrf_token %}
   
-  <label>
-    <input type="radio" name="metodo_pago" value="efectivo" required>
-    Efectivo
-  </label><br>
-  
-  <label>
-    <input type="radio" name="metodo_pago" value="tarjeta" required>
-    Tarjeta
-  </label><br>
-  
-  <label>
-    <input type="checkbox" name="envio_domicilio" value="si">
-    Envío a domicilio
-  </label><br><br>
-  
-  <button type="submit" class="btn btn-primary">Confirmar</button>
+  <div class="mb-3">
+    <label>
+      <input type="radio" name="metodo_pago" value="efectivo" required>
+      Pago en efectivo
+    </label><br>
+    <label>
+      <input type="radio" name="metodo_pago" value="tarjeta" required>
+      Pago con tarjeta
+    </label>
+  </div>
+
+  <div class="mb-3">
+    <label>
+      <input type="checkbox" name="envio_domicilio" value="si">
+      Envío a domicilio
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-success">Confirmar compra</button>
 </form>
+{% endblock %}
