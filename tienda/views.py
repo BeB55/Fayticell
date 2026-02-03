@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Producto
+from core.models import Producto
 
 def inicio(request):
     return HttpResponse("Bienvenido a Fayticell - Tu servicio tecnico de confianza.")
