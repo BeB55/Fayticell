@@ -46,6 +46,12 @@
     </tbody>
   </table>
   <h4>Total: ${{ total|floatformat:0|intcomma }}</h4>
+
+  <!-- Botón de pagar -->
+  <div class="mt-3">
+    <a href="{% url 'checkout' %}" class="btn btn-success btn-lg">Pagar</a>
+  </div>
+
 {% else %}
   <p>Tu carrito está vacío.</p>
 {% endif %}

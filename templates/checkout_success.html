@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 d-flex align-items-center">
+      <div class="flex-grow-1 border-top border-success me-3"></div>
+      <h2 class="text-success me-3 mb-0">Compra confirmada</h2>
+      <div class="flex-grow-1 border-top border-success ms-3"></div>
+    </div>
+</div>
+
+<p>¡Gracias por tu compra! 🎉</p>
+<p>Método de pago: {{ metodo }}</p>
+<p>Envío a domicilio: {% if envio %}Sí{% else %}No{% endif %}</p>
+
+<a href="{% url 'tienda:productos' %}" class="btn btn-primary mt-3">Volver a la tienda</a>
+{% endblock %}
