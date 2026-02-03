@@ -128,3 +128,6 @@ def disminuir_cantidad(request, producto_id):
             carrito.pop(str(producto_id))
         request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
+
+def checkout(request):
+    return render(request, "checkout.html")

@@ -1,0 +1,23 @@
+<h2>Finalizar compra</h2>
+<p>Selecciona tu método de pago:</p>
+
+<form method="post">
+  {% csrf_token %}
+  
+  <label>
+    <input type="radio" name="metodo_pago" value="efectivo" required>
+    Efectivo
+  </label><br>
+  
+  <label>
+    <input type="radio" name="metodo_pago" value="tarjeta" required>
+    Tarjeta
+  </label><br>
+  
+  <label>
+    <input type="checkbox" name="envio_domicilio" value="si">
+    Envío a domicilio
+  </label><br><br>
+  
+  <button type="submit" class="btn btn-primary">Confirmar</button>
+</form>
