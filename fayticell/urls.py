@@ -8,7 +8,6 @@ urlpatterns = [
     path('', include('core.urls')),   # core maneja la página principal
     path('tienda/', include('tienda.urls')),  # tienda maneja lo específico
     path('accounts/', include('allauth.urls')),  # allauth para autenticación
-    path("test-email/", test_email, name="test_email"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
