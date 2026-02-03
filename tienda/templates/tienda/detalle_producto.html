@@ -58,7 +58,7 @@
             <p class="text-primary fw-bold">
               ${{ rel.precio|floatformat:0|intcomma }}
             </p>
-            <a href="{% url 'detalle_producto' rel.id %}" class="btn btn-outline-primary btn-sm">
+            <a href="{% url 'tienda:detalle_producto' rel.id %}" class="btn btn-outline-primary btn-sm">
               Ver más
             </a>
           </div>
