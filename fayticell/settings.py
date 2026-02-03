@@ -183,6 +183,3 @@ DEFAULT_FROM_EMAIL = "fortinaitilababagi87@gmail.com"  # tu correo confirmado en
 # Opcional para debug
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 SENDGRID_ECHO_TO_STDOUT = True
-
-
-DEFAULT_FROM_EMAIL = "fortinaitilababagi87@gmail.com"  # tu correo confirmado en SendGrid
