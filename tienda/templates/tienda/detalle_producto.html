@@ -1,34 +1,72 @@
 {% extends "base.html" %}
-{% load humanize %}   {# ✅ cargamos humanize para usar intcomma #}
+{% load humanize %}
 
 {% block content %}
 <div class="container my-5">
   <div class="row">
     <!-- Imagen del producto -->
     <div class="col-md-6">
-      <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow" alt="{{ producto.nombre }}">
+      <div class="card shadow-sm">
+        <img src="{{ producto.imagen.url }}" class="card-img-top img-fluid rounded" alt="{{ producto.nombre }}">
+      </div>
     </div>
 
     <!-- Información del producto -->
     <div class="col-md-6">
-      <h2 class="mb-3">{{ producto.nombre }}</h2>
-      <p class="text-muted">{{ producto.descripcion }}</p>
+      <h2 class="mb-3 text-primary fw-bold">{{ producto.nombre }}</h2>
+      <p class="fs-5 text-muted">{{ producto.descripcion }}</p>
 
-      <!-- Precio formateado -->
-      <p class="fw-bold fs-4 text-primary">
-        Precio: ${{ producto.precio|floatformat:0|intcomma }}
-      </p>
+      <!-- Precio destacado -->
+      <div class="p-3 bg-light rounded shadow-sm mb-3">
+        <span class="fw-bold fs-3 text-success">
+          ${{ producto.precio|floatformat:0|intcomma }}
+        </span>
+      </div>
 
-      {% if producto.destacado %}
-      <span class="badge bg-success">Destacado</span>
-      {% endif %}
+      <!-- Badges -->
+      <div class="mb-3">
+        {% if producto.destacado %}
+        <span class="badge bg-success me-2">Destacado</span>
+        {% endif %}
+        <span class="badge bg-info">Nuevo</span>
+      </div>
 
       <!-- Botón de acción -->
       <div class="mt-4">
-        <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success btn-lg">
-          <i class="bi bi-cart-plus"></i> Agregar al carrito</a>
+        <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-success btn-lg shadow">
+          <i class="bi bi-cart-plus"></i> Agregar al carrito
+        </a>
+        <a href="https://wa.me/?text=Quiero%20consultar%20por%20{{ producto.nombre }}" 
+           class="btn btn-outline-primary btn-lg ms-2">
+          <i class="bi bi-whatsapp"></i> Consultar por WhatsApp
+        </a>
       </div>
     </div>
   </div>
+
+  <!-- Productos relacionados -->
+  {% if relacionados %}
+  <div class="mt-5">
+    <h4 class="mb-4">Productos relacionados</h4>
+    <div class="row">
+      {% for rel in relacionados %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ rel.imagen.url }}" class="card-img-top" alt="{{ rel.nombre }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ rel.nombre }}</h5>
+            <p class="text-primary fw-bold">
+              ${{ rel.precio|floatformat:0|intcomma }}
+            </p>
+            <a href="{% url 'detalle_producto' rel.id %}" class="btn btn-outline-primary btn-sm">
+              Ver más
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
