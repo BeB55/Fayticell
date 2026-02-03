@@ -12,24 +12,46 @@
 <form method="post">
   {% csrf_token %}
   
-  <div class="mb-3">
-    <label>
-      <input type="radio" name="metodo_pago" value="efectivo" required>
-      Pago en efectivo
-    </label><br>
-    <label>
-      <input type="radio" name="metodo_pago" value="tarjeta" required>
-      Pago con tarjeta
-    </label>
+  <div class="row">
+    <!-- Pago en efectivo -->
+    <div class="col-md-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body text-center">
+          <i class="bi bi-cash-stack display-4 text-success"></i>
+          <h5 class="card-title mt-2">Pago en efectivo</h5>
+          <p class="card-text">Aboná al recibir tu pedido o en el local.</p>
+          <input type="radio" name="metodo_pago" value="efectivo" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pago con tarjeta -->
+    <div class="col-md-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body text-center">
+          <i class="bi bi-credit-card-2-front display-4 text-primary"></i>
+          <h5 class="card-title mt-2">Pago con tarjeta</h5>
+          <p class="card-text">Pagá de forma rápida y segura.</p>
+          <input type="radio" name="metodo_pago" value="tarjeta" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Envío a domicilio -->
+    <div class="col-md-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body text-center">
+          <i class="bi bi-truck display-4 text-warning"></i>
+          <h5 class="card-title mt-2">Envío a domicilio</h5>
+          <p class="card-text">Recibí tu compra en la puerta de tu casa.</p>
+          <input type="checkbox" name="envio_domicilio" value="si">
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <label>
-      <input type="checkbox" name="envio_domicilio" value="si">
-      Envío a domicilio
-    </label>
+  <div class="text-center mt-4">
+    <button type="submit" class="btn btn-success btn-lg">Confirmar compra</button>
   </div>
-
-  <button type="submit" class="btn btn-success">Confirmar compra</button>
 </form>
 {% endblock %}
