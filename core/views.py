@@ -26,6 +26,9 @@ def contacto(request):
 def nosotros(request):
     return render(request, 'nosotros.html')
 
+def como_comprar(request):
+    return render(request, "como_comprar.html")
+
 def productos(request):
     productos = Producto.objects.all()
     categoria = request.GET.get('categoria')
