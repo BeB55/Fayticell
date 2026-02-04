@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Producto
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .forms import EditProfileForm, UserForm
 from .models import Profile
 from django.http import HttpResponse
@@ -65,6 +66,7 @@ def edit_profile(request):
         "profile_form": profile_form,
     })
 
+
 def ver_carrito(request):
     carrito = request.session.get('carrito', {})
     total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
@@ -75,14 +77,22 @@ def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
 
     if str(producto_id) in carrito:
-        carrito[str(producto_id)]['cantidad'] += 1
+        # Validar stock antes de sumar usando el stock guardado
+        if carrito[str(producto_id)]['cantidad'] < carrito[str(producto_id)]['stock']:
+            carrito[str(producto_id)]['cantidad'] += 1
+        else:
+            messages.error(request, f"No hay suficiente stock de {producto.nombre}.")
     else:
-        carrito[str(producto_id)] = {
-            'nombre': producto.nombre,
-            'precio': float(producto.precio),
-            'cantidad': 1,
-            'imagen': producto.imagen.url if producto.imagen else None,
-        }
+        if producto.stock > 0:
+            carrito[str(producto_id)] = {
+                'nombre': producto.nombre,
+                'precio': float(producto.precio),
+                'cantidad': 1,
+                'imagen': producto.imagen.url if producto.imagen else None,
+                'stock': producto.stock  # 👈 guardamos stock en el carrito
+            }
+        else:
+            messages.error(request, f"{producto.nombre} está sin stock.")
 
     request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'productos'))
@@ -96,14 +106,21 @@ def eliminar_del_carrito(request, producto_id):
 
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
+
     if str(producto_id) in carrito:
-        carrito[str(producto_id)]['cantidad'] += 1
+        # Validar stock contra el valor guardado en el carrito
+        if carrito[str(producto_id)]['cantidad'] < carrito[str(producto_id)]['stock']:
+            carrito[str(producto_id)]['cantidad'] += 1
+        else:
+            messages.error(request, f"No hay suficiente stock de {carrito[str(producto_id)]['nombre']}.")
         request.session['carrito'] = carrito
+
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
 def disminuir_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
     if str(producto_id) in carrito:
+        # Siempre permitir disminuir, incluso si el stock es 0
         if carrito[str(producto_id)]['cantidad'] > 1:
             carrito[str(producto_id)]['cantidad'] -= 1
         else:
@@ -111,16 +128,16 @@ def disminuir_cantidad(request, producto_id):
         request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
+
+
 def checkout(request):
     if request.method == "POST":
         metodo = request.POST.get("metodo_pago")
 
         if metodo == "efectivo":
-            # Si es efectivo, simplemente confirmamos compra
             return redirect("pago_exito")
 
         elif metodo == "tarjeta":
-            # Flujo con Mercado Pago
             sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
             preference_data = {
@@ -145,10 +162,8 @@ def checkout(request):
 
             return redirect(preference["init_point"])
 
-        # Si no se selecciona nada, volver al checkout
         return render(request, "checkout.html", {"error": "Seleccioná un método de pago"})
 
-    # Si es GET, mostrar el formulario
     return render(request, "checkout.html")
 
 

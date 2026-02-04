@@ -7,7 +7,14 @@
   <div class="row">
     {% for producto in productos %}
       <div class="col-md-3 mb-4">
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm position-relative">
+          
+          <!-- Badge fijo en la esquina -->
+          {% if producto.stock > 0 %}
+            <span class="badge bg-success position-absolute top-0 end-0 m-2">Disponible</span>
+          {% else %}
+            <span class="badge bg-danger position-absolute top-0 end-0 m-2">Sin stock</span>
+          {% endif %}
           
           <!-- Imagen del producto -->
           {% if producto.imagen %}
@@ -22,18 +29,11 @@
             <p class="fw-bold text-primary">
               ${{ producto.precio|floatformat:0|intcomma }}
             </p>
-            
-            <!-- Mostrar badge de stock -->
-            {% if producto.stock > 0 %}
-              <span class="badge bg-success">Disponible</span>
-            {% else %}
-              <span class="badge bg-danger">Sin stock</span>
-            {% endif %}
           </div>
 
-          <!-- Footer con botón alineado -->
+          <!-- Footer con botones -->
           <div class="card-footer bg-transparent border-0">
-            <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">
+            <a href="{% url 'tienda:detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">
               Ver más
             </a>
             
