@@ -4,11 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import EditProfileForm, UserForm
 from .models import Profile
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from io import BytesIO
 from django.conf import settings
-import datetime
 import mercadopago
 
 
@@ -115,27 +111,46 @@ def disminuir_cantidad(request, producto_id):
         request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
-# ✅ Checkout corregido con PDF + envío por email
 def checkout(request):
     if request.method == "POST":
         metodo = request.POST.get("metodo_pago")
-        envio = request.POST.get("envio_domicilio")
-        carrito = request.session.get('carrito', {})
-        total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
 
-        # Generar PDF en memoria
-        buffer = BytesIO()
-        p = canvas.Canvas(buffer, pagesize=A4)
-        p.setFont("Helvetica", 12)
-        p.drawString(100, 800, "Fayticell - Comprobante de compra")
-        p.drawString(100, 780, f"Fecha: {datetime.date.today()}")
-        p.drawString(100, 750, f"Método de pago: {metodo}")
-        p.drawString(100, 730, f"Envío a domicilio: {'Sí' if envio else 'No'}")
-        p.drawString(100, 710, f"Total: ${total}")
-        p.showPage()
-        p.save()
-        pdf = buffer.getvalue()
-        buffer.close()
+        if metodo == "efectivo":
+            # Si es efectivo, simplemente confirmamos compra
+            return redirect("pago_exito")
+
+        elif metodo == "tarjeta":
+            # Flujo con Mercado Pago
+            sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+
+            preference_data = {
+                "items": [
+                    {
+                        "title": "Compra Fayticell",
+                        "quantity": 1,
+                        "currency_id": "ARS",
+                        "unit_price": 100.00
+                    }
+                ],
+                "back_urls": {
+                    "success": "https://fayticell.onrender.com/pago/exito/",
+                    "failure": "https://fayticell.onrender.com/pago/error/",
+                    "pending": "https://fayticell.onrender.com/pago/pendiente/"
+                },
+                "auto_return": "approved",
+            }
+
+            preference_response = sdk.preference().create(preference_data)
+            preference = preference_response["response"]
+
+            return redirect(preference["init_point"])
+
+        # Si no se selecciona nada, volver al checkout
+        return render(request, "checkout.html", {"error": "Seleccioná un método de pago"})
+
+    # Si es GET, mostrar el formulario
+    return render(request, "checkout.html")
+
 
 def iniciar_pago(request):
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
