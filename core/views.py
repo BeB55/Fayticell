@@ -77,22 +77,14 @@ def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
 
     if str(producto_id) in carrito:
-        # Validar stock antes de sumar usando el stock guardado
-        if carrito[str(producto_id)]['cantidad'] < carrito[str(producto_id)]['stock']:
-            carrito[str(producto_id)]['cantidad'] += 1
-        else:
-            messages.error(request, f"No hay suficiente stock de {producto.nombre}.")
+        carrito[str(producto_id)]['cantidad'] += 1
     else:
-        if producto.stock > 0:
-            carrito[str(producto_id)] = {
-                'nombre': producto.nombre,
-                'precio': float(producto.precio),
-                'cantidad': 1,
-                'imagen': producto.imagen.url if producto.imagen else None,
-                'stock': producto.stock  # 👈 guardamos stock en el carrito
-            }
-        else:
-            messages.error(request, f"{producto.nombre} está sin stock.")
+        carrito[str(producto_id)] = {
+            'nombre': producto.nombre,
+            'precio': float(producto.precio),
+            'cantidad': 1,
+            'imagen': producto.imagen.url if producto.imagen else None,
+        }
 
     request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'productos'))
@@ -106,28 +98,20 @@ def eliminar_del_carrito(request, producto_id):
 
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
-
     if str(producto_id) in carrito:
-        # Validar stock contra el valor guardado en el carrito
-        if carrito[str(producto_id)]['cantidad'] < carrito[str(producto_id)]['stock']:
-            carrito[str(producto_id)]['cantidad'] += 1
-        else:
-            messages.error(request, f"No hay suficiente stock de {carrito[str(producto_id)]['nombre']}.")
+        carrito[str(producto_id)]['cantidad'] += 1
         request.session['carrito'] = carrito
-
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
 def disminuir_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
     if str(producto_id) in carrito:
-        # Siempre permitir disminuir, incluso si el stock es 0
         if carrito[str(producto_id)]['cantidad'] > 1:
             carrito[str(producto_id)]['cantidad'] -= 1
         else:
             carrito.pop(str(producto_id))
         request.session['carrito'] = carrito
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
-
 
 
 def checkout(request):
