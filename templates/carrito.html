@@ -36,16 +36,20 @@
           </td>
           <td>${{ item.precio|floatformat:0|intcomma }}</td>
           <td>
-            {% if item.stock and item.stock > 0 %}
-              <div class="d-flex align-items-center gap-2">
-                <a href="{% url 'disminuir_cantidad' id %}" class="btn btn-outline-secondary btn-sm">-</a>
-                <span>{{ item.cantidad }}</span>
+            <div class="d-flex align-items-center gap-2">
+              <!-- Siempre permitir disminuir -->
+              <a href="{% url 'disminuir_cantidad' id %}" class="btn btn-outline-secondary btn-sm">-</a>
+              <span>{{ item.cantidad }}</span>
+
+              <!-- Solo permitir incrementar si hay stock -->
+              {% if item.stock and item.cantidad < item.stock %}
                 <a href="{% url 'incrementar_cantidad' id %}" class="btn btn-outline-secondary btn-sm">+</a>
-              </div>
-            {% else %}
-              <span class="text-muted">No disponible</span>
-            {% endif %}
+              {% else %}
+                <button class="btn btn-outline-secondary btn-sm" disabled>+</button>
+              {% endif %}
+            </div>
           </td>
+
           <td>
             ${{ item.precio|mul:item.cantidad|floatformat:0|intcomma }}
           </td>

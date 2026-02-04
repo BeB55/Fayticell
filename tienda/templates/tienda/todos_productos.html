@@ -15,7 +15,8 @@
           <p class="fw-bold">Precio: ${{ producto.precio|floatformat:0|intcomma }}</p>
         </div>
         <div class="card-footer bg-transparent border-0 d-flex gap-2">
-          <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary flex-fill">
+          <!-- corregido con namespace tienda -->
+          <a href="{% url 'tienda:detalle_producto' producto.id %}" class="btn btn-outline-primary flex-fill">
             Ver más
           </a>
           <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-success flex-fill">
@@ -30,4 +31,3 @@
   </div>
 </div>
 {% endblock %}
-
