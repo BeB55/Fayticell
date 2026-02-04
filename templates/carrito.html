@@ -28,11 +28,6 @@
         <tr>
           <td>
             {{ item.nombre }}
-            {% if item.stock and item.stock > 0 %}
-              <span class="badge bg-success ms-2">Disponible</span>
-            {% else %}
-              <span class="badge bg-danger ms-2">Sin stock</span>
-            {% endif %}
           </td>
           <td>${{ item.precio|floatformat:0|intcomma }}</td>
           <td>
@@ -40,16 +35,10 @@
               <!-- Siempre permitir disminuir -->
               <a href="{% url 'disminuir_cantidad' id %}" class="btn btn-outline-secondary btn-sm">-</a>
               <span>{{ item.cantidad }}</span>
-
-              <!-- Solo permitir incrementar si hay stock -->
-              {% if item.stock and item.cantidad < item.stock %}
-                <a href="{% url 'incrementar_cantidad' id %}" class="btn btn-outline-secondary btn-sm">+</a>
-              {% else %}
-                <button class="btn btn-outline-secondary btn-sm" disabled>+</button>
-              {% endif %}
+              <!-- Siempre permitir incrementar -->
+              <a href="{% url 'incrementar_cantidad' id %}" class="btn btn-outline-secondary btn-sm">+</a>
             </div>
           </td>
-
           <td>
             ${{ item.precio|mul:item.cantidad|floatformat:0|intcomma }}
           </td>
