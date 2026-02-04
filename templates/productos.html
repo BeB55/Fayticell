@@ -22,6 +22,13 @@
             <p class="fw-bold text-primary">
               ${{ producto.precio|floatformat:0|intcomma }}
             </p>
+            
+            <!-- Mostrar badge de stock -->
+            {% if producto.stock > 0 %}
+              <span class="badge bg-success">Disponible</span>
+            {% else %}
+              <span class="badge bg-danger">Sin stock</span>
+            {% endif %}
           </div>
 
           <!-- Footer con botón alineado -->
@@ -29,9 +36,16 @@
             <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">
               Ver más
             </a>
-            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success w-100 mt-2">
-              Agregar al carrito
-            </a>
+            
+            {% if producto.stock > 0 %}
+              <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success w-100 mt-2">
+                Agregar al carrito
+              </a>
+            {% else %}
+              <button class="btn btn-secondary w-100 mt-2" disabled>
+                No disponible
+              </button>
+            {% endif %}
           </div>
         </div>
       </div>
