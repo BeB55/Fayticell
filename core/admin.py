@@ -3,8 +3,8 @@ from .models import Producto, Profile
 
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'categoria', 'precio', 'stock', 'destacado')  # columnas visibles
-    list_editable = ('stock',)  # permite editar stock directamente en la lista
+    list_display = ('nombre', 'categoria', 'precio', 'destacado')  # columnas visibles
+    list_editable = ('destacado',)  
     search_fields = ('nombre',)
     list_filter = ('categoria', 'destacado')
 
