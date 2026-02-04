@@ -6,9 +6,11 @@ from .models import Profile
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from django.core.mail import EmailMessage
 from io import BytesIO
+from django.conf import settings
 import datetime
+import mercadopago
+
 
 def home(request):
     productos = Producto.objects.filter(destacado=True)[:6]
@@ -135,21 +137,27 @@ def checkout(request):
         pdf = buffer.getvalue()
         buffer.close()
 
-        # Enviar email si el usuario está logueado
-        if request.user.is_authenticated:
-            email = EmailMessage(
-                "Tu comprobante de compra - Fayticell",
-                "Gracias por tu compra. Adjuntamos tu comprobante en PDF.",
-                None,  # usa DEFAULT_FROM_EMAIL de settings.py
-                [request.user.email],
-            )
-            email.attach("comprobante.pdf", pdf, "application/pdf")
-            email.send()
+def iniciar_pago(request):
+    sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
-        return render(request, "checkout_success.html", {
-            "metodo": metodo,
-            "envio": envio,
-            "total": total,
-        })
+    preference_data = {
+        "items": [
+            {
+                "title": "Producto ejemplo",
+                "quantity": 1,
+                "currency_id": "ARS",
+                "unit_price": 1500.00
+            }
+        ],
+        "back_urls": {
+            "success": "https://fayticell.onrender.com/pago/exito/",
+            "failure": "https://fayticell.onrender.com/pago/error/",
+            "pending": "https://fayticell.onrender.com/pago/pendiente/"
+        },
+        "auto_return": "approved",
+    }
 
-    return render(request, "checkout.html")
+    preference_response = sdk.preference().create(preference_data)
+    preference = preference_response["response"]
+
+    return redirect(preference["init_point"])
