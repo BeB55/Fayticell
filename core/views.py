@@ -161,3 +161,12 @@ def iniciar_pago(request):
     preference = preference_response["response"]
 
     return redirect(preference["init_point"])
+
+def pago_exito(request):
+     return HttpResponse("Pago realizado con éxito ✅") 
+
+def pago_error(request):
+     return HttpResponse("Hubo un error en el pago ❌")
+     
+def pago_pendiente(request):
+    return HttpResponse("El pago está pendiente ⏳")
