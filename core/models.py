@@ -22,7 +22,6 @@ class Producto(models.Model):
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
-    stock = models.PositiveIntegerField(default=0)
     destacado = models.BooleanField(default=False)   # 👈 este campo faltaba
     categoria = models.CharField(max_length=50, choices=CATEGORIAS, default="celulares")
 
