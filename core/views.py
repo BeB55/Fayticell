@@ -10,7 +10,7 @@ import mercadopago
 
 
 def home(request):
-    productos = Producto.objects.filter(destacado=True)[:6]
+    productos = Producto.objects.filter(destacado=True)
     return render(request, 'home.html', {'productos': productos})
 
 def garantias(request):
