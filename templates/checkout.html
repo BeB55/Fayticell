@@ -9,14 +9,14 @@
     </div>
 </div>
 
-<form method="post">
+<form method="post" id="compraForm">
   {% csrf_token %}
   
   <div class="row">
     <!-- Pago en efectivo -->
-    <div class="col-md-4">
-      <div class="card shadow-sm mb-3">
-        <div class="card-body text-center">
+    <div class="col-md-6">
+      <div class="card mb-3 text-center">
+        <div class="card-body">
           <i class="bi bi-cash-stack display-4 text-success"></i>
           <h5 class="card-title mt-2">Pago en efectivo</h5>
           <p class="card-text">Aboná al recibir tu pedido o en el local.</p>
@@ -26,9 +26,9 @@
     </div>
 
     <!-- Pago con tarjeta -->
-    <div class="col-md-4">
-      <div class="card shadow-sm mb-3">
-        <div class="card-body text-center">
+    <div class="col-md-6">
+      <div class="card mb-3 text-center">
+        <div class="card-body">
           <i class="bi bi-credit-card-2-front display-4 text-primary"></i>
           <h5 class="card-title mt-2">Pago con tarjeta</h5>
           <p class="card-text">Pagá de forma rápida y segura.</p>
@@ -36,15 +36,31 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Envío a domicilio -->
-    <div class="col-md-4">
-      <div class="card shadow-sm mb-3">
-        <div class="card-body text-center">
-          <i class="bi bi-truck display-4 text-warning"></i>
-          <h5 class="card-title mt-2">Envío a domicilio</h5>
-          <p class="card-text">Recibí tu compra en la puerta de tu casa.</p>
-          <input type="checkbox" name="envio_domicilio" value="si">
+  <!-- Sección de envío a domicilio -->
+  <div class="card mt-4">
+    <div class="card-body">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="envioCheck" name="envio_domicilio" value="si">
+        <label class="form-check-label fw-bold" for="envioCheck">
+          Solicitar envío a domicilio
+        </label>
+      </div>
+
+      <!-- Campos de dirección, ocultos hasta que se seleccione -->
+      <div id="direccionEnvio" class="mt-3" style="display:none;">
+        <div class="mb-3">
+          <label for="calle" class="form-label">Calle y número</label>
+          <input type="text" class="form-control" id="calle" name="calle">
+        </div>
+        <div class="mb-3">
+          <label for="localidad" class="form-label">Localidad</label>
+          <input type="text" class="form-control" id="localidad" name="localidad">
+        </div>
+        <div class="mb-3">
+          <label for="codigo_postal" class="form-label">Código Postal</label>
+          <input type="text" class="form-control" id="codigo_postal" name="codigo_postal">
         </div>
       </div>
     </div>
@@ -54,4 +70,51 @@
     <button type="submit" class="btn btn-success btn-lg">Confirmar compra</button>
   </div>
 </form>
+
+<script>
+  const envioCheck = document.getElementById('envioCheck');
+  const direccionEnvio = document.getElementById('direccionEnvio');
+  const compraForm = document.getElementById('compraForm');
+
+  envioCheck.addEventListener('change', function() {
+    if (this.checked) {
+      direccionEnvio.style.display = 'block';
+      // activar required en los campos
+      document.getElementById('calle').setAttribute('required', true);
+      document.getElementById('localidad').setAttribute('required', true);
+      document.getElementById('codigo_postal').setAttribute('required', true);
+    } else {
+      direccionEnvio.style.display = 'none';
+      // quitar required si no se selecciona envío
+      document.getElementById('calle').removeAttribute('required');
+      document.getElementById('localidad').removeAttribute('required');
+      document.getElementById('codigo_postal').removeAttribute('required');
+    }
+  });
+
+  // Validación extra: mostrar alerta si falta completar
+  compraForm.addEventListener('submit', function(e) {
+    if (envioCheck.checked) {
+      const calle = document.getElementById('calle').value.trim();
+      const localidad = document.getElementById('localidad').value.trim();
+      const cp = document.getElementById('codigo_postal').value.trim();
+      if (!calle || !localidad || !cp) {
+        e.preventDefault();
+        alert("Por favor completá todos los campos de dirección para el envío a domicilio.");
+      }
+    }
+  });
+</script>
+
+<style>
+.card {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* sombra permanente */
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25); /* sombra más intensa al pasar el cursor */
+}
+</style>
 {% endblock %}
