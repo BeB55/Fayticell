@@ -114,6 +114,7 @@ def disminuir_cantidad(request, producto_id):
     return redirect(request.META.get('HTTP_REFERER', 'carrito'))
 
 
+@login_required
 def checkout(request):
     if request.method == "POST":
         metodo = request.POST.get("metodo_pago")
