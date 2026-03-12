@@ -81,11 +81,10 @@ WSGI_APPLICATION = 'fayticell.wsgi.application'
 
 # settings.py
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',   # motor de base de datos
-        'NAME': BASE_DIR / 'db.sqlite3',          # archivo local dentro del proyecto
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
 
