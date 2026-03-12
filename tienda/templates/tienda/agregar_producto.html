@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">Agregar nuevo producto</h2>
+
+  <!-- Bloque de mensajes globales -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} mt-2">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Bloque de errores específicos del formulario -->
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for field, errors in form.errors.items %}
+          <li><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <!-- ✅ Formulario para agregar producto manual -->
+  <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      {{ form.nombre.label_tag }}
+      {{ form.nombre }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.precio.label_tag }}
+      {{ form.precio }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.imagen.label_tag }}
+      {{ form.imagen }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.descripcion.label_tag }}
+      {{ form.descripcion }}
+    </div>
+
+    <!-- Campo de categoría -->
+    <div class="mb-3">
+      {{ form.categoria.label_tag }}
+      {{ form.categoria }}
+    </div>
+
+    <div class="form-check mb-3">
+      {{ form.destacado }}
+      {{ form.destacado.label_tag }}
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <a href="{% url 'tienda:todos_productos' %}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-success">Guardar producto</button>
+    </div>
+  </form>
+
+  <!-- ✅ Bloque separado para Excel -->
+  <hr class="my-4">
+  <h5 class="text-secondary">Importar productos desde Excel</h5>
+  <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="excel_file" class="form-label">Seleccioná tu archivo Excel</label>
+      <input type="file" name="excel_file" id="excel_file" accept=".xlsx,.xls,.csv" 
+             class="form-control" 
+             placeholder="Elegí un archivo con tus productos">
+      <div class="form-text text-muted">
+        📥 Formato esperado: columnas <strong>nombre</strong>, <strong>descripcion</strong>, <strong>precio</strong>, <strong>destacado</strong>.
+      </div>
+    </div>
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button type="submit" name="import_excel" class="btn btn-info">
+        <i class="bi bi-file-earmark-excel"></i> Cargar desde Excel
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -22,5 +22,4 @@ urlpatterns = [
     path("pago/error/", views.pago_error, name="pago_error"),
     path("pago/pendiente/", views.pago_pendiente, name="pago_pendiente"),
 
-
 ]

@@ -42,7 +42,11 @@
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
       <div class="card h-100 shadow-sm {% if producto.destacado %}destacado{% endif %}">
         <div class="position-relative">
-          <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+          {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+          {% else %}
+            <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Sin imagen">
+          {% endif %}
           {% if producto.destacado %}
           <span class="badge bg-success position-absolute top-0 start-0 m-2">Destacado</span>
           {% endif %}

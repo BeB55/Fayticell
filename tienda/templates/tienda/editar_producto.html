@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">Editar producto: {{ producto.nombre }}</h2>
+
+  <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <a href="{% url 'tienda:todos_productos' %}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-success">Guardar cambios</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

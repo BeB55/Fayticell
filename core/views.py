@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Producto
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import EditProfileForm, UserForm
+from .forms import EditProfileForm, UserForm, ProductoForm
 from .models import Profile
 from django.http import HttpResponse
 from django.conf import settings
