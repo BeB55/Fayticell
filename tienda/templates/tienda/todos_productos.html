@@ -1,27 +1,47 @@
 {% extends "base.html" %}
+{% load static %}
 {% load humanize %}
 
 {% block content %}
 <div class="container my-5">
-  <h2 class="text-primary mb-4">Todos los productos</h2>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary mb-0">Todos los productos</h2>
+    {% if user.is_staff %}
+      <a href="{% url 'tienda:agregar_producto' %}" class="btn btn-sm btn-success">
+        ➕ Agregar producto
+      </a>
+    {% endif %}
+  </div>
+
   <div class="row">
     {% for producto in productos %}
     <div class="col-md-3 mb-4">
       <div class="card h-100 shadow-sm border-0 {% if producto.destacado %}destacado{% endif %}">
-        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        {% if producto.imagen %}
+          <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        {% else %}
+          <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Sin imagen">
+        {% endif %}
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">{{ producto.nombre }}</h5>
           <p class="card-text text-muted">{{ producto.descripcion|truncatewords:20 }}</p>
           <p class="fw-bold">Precio: ${{ producto.precio|floatformat:0|intcomma }}</p>
         </div>
-        <div class="card-footer bg-transparent border-0 d-flex gap-2">
-          <!-- corregido con namespace tienda -->
+        <div class="card-footer bg-transparent border-0 d-flex flex-wrap gap-2">
           <a href="{% url 'tienda:detalle_producto' producto.id %}" class="btn btn-outline-primary flex-fill">
             Ver más
           </a>
           <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-success flex-fill">
             <i class="bi bi-cart-plus"></i> Agregar
           </a>
+          {% if user.is_staff %}
+            <a href="{% url 'tienda:editar_producto' producto.id %}" class="btn btn-sm btn-warning flex-fill">
+              Editar
+            </a>
+            <a href="{% url 'tienda:eliminar_producto' producto.id %}" class="btn btn-sm btn-danger flex-fill">
+              Eliminar
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>

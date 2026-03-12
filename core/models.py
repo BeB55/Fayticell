@@ -9,7 +9,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"Perfil de {self.user.username}"
 
-
 class Producto(models.Model):
     CATEGORIAS = [
         ("celulares", "Celulares"),
@@ -21,10 +20,14 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
-    destacado = models.BooleanField(default=False)   # 👈 este campo faltaba
+    imagen = models.ImageField(
+        upload_to='productos/',
+        blank=True,
+        null=True,
+        default='productos/default.jpg'  # ✅ imagen por defecto
+    )
+    destacado = models.BooleanField(default=False)
     categoria = models.CharField(max_length=50, choices=CATEGORIAS, default="celulares")
 
     def __str__(self):
         return self.nombre
-
