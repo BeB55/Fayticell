@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.contrib import messages
-from core.models import Producto
+from core.models import Producto, Categoria   # 👈 Importamos también Categoria
 from core.forms import ProductoForm
 import pandas as pd
 
@@ -12,12 +12,10 @@ def inicio(request):
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
 
-    # Buscar productos relacionados por categoría
     relacionados = Producto.objects.filter(
         categoria=producto.categoria
     ).exclude(pk=producto.pk)[:3]
 
-    # Obtener cantidad actual en el carrito
     carrito = request.session.get('carrito', {})
     cantidad_en_carrito = carrito.get(str(producto.id), {}).get('cantidad', 0)
 
@@ -45,13 +43,18 @@ def agregar_producto(request):
                 df = pd.read_excel(excel_file)
 
                 for _, row in df.iterrows():
+                    categoria_nombre = row.get("categoria", None)
+                    categoria_obj = None
+                    if categoria_nombre:
+                        # Busca la categoría por nombre, o la crea si no existe
+                        categoria_obj, _ = Categoria.objects.get_or_create(nombre=categoria_nombre)
+
                     Producto.objects.create(
                         nombre=row.get("nombre", ""),
                         descripcion=row.get("descripcion", ""),
                         precio=row.get("precio", 0),
                         destacado=row.get("destacado", False),
-                        # Si tu modelo tiene categoría, podés mapearla también
-                        # categoria_id=row.get("categoria_id", None),
+                        categoria=categoria_obj
                     )
                 messages.success(request, "📥 Productos importados correctamente desde Excel.")
                 return redirect('tienda:todos_productos')
